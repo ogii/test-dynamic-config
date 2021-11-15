@@ -8,7 +8,7 @@ curl --location --request POST 'https://circleci.com/api/v2/project/github/ogii/
 --header "Circle-Token: $CIRCLECI_TOKEN" \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "parameters": {
+    "parameters": { 
         "my-pipeline-param-api": true
     }
 }'
