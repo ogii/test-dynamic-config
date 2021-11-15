@@ -1,0 +1,24 @@
+
+version: 2.1
+
+parameters:
+  my-pipeline-param:
+    default: false
+    type: boolean
+  my-pipeline-param-api:
+    default: false
+    type: boolean
+    
+jobs:
+  my-job:
+    docker:
+      - image: alpine
+    steps:
+      - run: echo "parameter was true"
+
+workflows:
+  my-workflow:
+    jobs:
+      - my-job
+    when:
+      equal: [ true, << pipeline.parameters.my-pipeline-param >> ]
