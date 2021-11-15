@@ -1,0 +1,30 @@
+version: 2.1
+
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@0.0.2
+  continuation: circleci/continuation@0.1.2
+
+parameters:
+  my-pipeline-param-api:
+    type: boolean
+    default: false
+
+workflows:
+  deploy-services-filter:
+    unless: << pipeline.parameters.my-pipeline-param-api >>
+    jobs:
+      - path-filtering/filter:
+          base-revision: main
+          config-path: .circleci/deploy.yml
+          mapping: |
+            somedir/somefile.yml my-pipeline-param true
+  deploy-services-api:
+    when: << pipeline.parameters.my-pipeline-param-api >>
+    jobs:
+      - continuation/continue:
+          pre-steps:
+            - checkout
+          configuration_path: .circleci/deploy.yml
+          parameters: '{"my-pipeline-param": true}'
